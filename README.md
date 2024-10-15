@@ -15,5 +15,5 @@
 - Empower small-scale farmers with actionable data and insights.
 - Contribute to the UN's Sustainable Development Goals (SDG 2: Zero Hunger) by enhancing agricultural productivity.
 
-## Resources (Including Release Letters) 
+## Resources 
 Drive Link: https://drive.google.com/drive/u/2/folders/1w_QjCJqgH8Zm1eb2FqBRZ-np64vZXtlB
