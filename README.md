@@ -16,5 +16,5 @@
 - Contribute to the UN's Sustainable Development Goals (SDG 2: Zero Hunger) by enhancing agricultural productivity.
 
 ## Resources 
-* Drive Link: [(https://drive.google.com/drive/u/2/folders/1w_QjCJqgH8Zm1eb2FqBRZ-np64vZXtlB)]
-* First Draft UI Vedio Link: [(https://drive.google.com/file/d/1J3QUJ1kFEvAFWmEMEknNJkVojbnNJKNV/view?usp=drive_link)]
+* Drive Link: [https://drive.google.com/drive/u/2/folders/1w_QjCJqgH8Zm1eb2FqBRZ-np64vZXtlB]
+* First Draft UI Vedio Link: [https://drive.google.com/file/d/1J3QUJ1kFEvAFWmEMEknNJkVojbnNJKNV/view?usp=drive_link]
