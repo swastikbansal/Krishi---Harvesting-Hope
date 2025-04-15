@@ -1,0 +1,6 @@
+NSLocationWhenInUseUsageDescription = "Allows for accurate weather report catered for your loc";
+NSCameraUsageDescription = "Vn order to capture images, this app requires permission to access the camera.";
+NSPhotoLibraryUsageDescription = "Vn order to upload data, this app requires permission to access the photo library.";
+PermissionGroupNotification = "Allow app to display notifications.";
+NSBluetoothAlwaysUsageDescription = "In order to fetch sensor data, this app requires permission to access the bluetooth.";
+NSMicrophoneUsageDescription = "In order to fetch speech responses, this app requires permission to access the microphone.";

@@ -1,0 +1,6 @@
+NSLocationWhenInUseUsageDescription = "ਤੁਹਾਡੇ ਸਥਾਨ ਲਈ ਤਿਆਰ ਕੀਤੀ ਗਈ ਸਹੀ ਮੌਸਮ ਰਿਪੋਰਟ ਦੀ ਆਗਿਆ ਦਿੰਦਾ ਹੈ";
+NSCameraUsageDescription = "ਤਸਵੀਰਾਂ ਕੈਪਚਰ ਕਰਨ ਲਈ, ਇਸ ਐਪ ਨੂੰ ਕੈਮਰੇ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।";
+NSPhotoLibraryUsageDescription = "ਡਾਟਾ ਅਪਲੋਡ ਕਰਨ ਲਈ, ਇਸ ਐਪ ਨੂੰ ਫੋਟੋ ਲਾਇਬ੍ਰੇਰੀ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।";
+PermissionGroupNotification = "ਐਪ ਨੂੰ ਸੂਚਨਾਵਾਂ ਦਿਖਾਉਣ ਦੀ ਆਗਿਆ ਦਿਓ।";
+NSBluetoothAlwaysUsageDescription = "ਸੈਂਸਰ ਡੇਟਾ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ, ਇਸ ਐਪ ਨੂੰ ਬਲੂਟੁੱਥ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੈ।";
+NSMicrophoneUsageDescription = "ਬੋਲੀ ਦੇ ਜਵਾਬ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ, ਇਸ ਐਪ ਨੂੰ ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।";
