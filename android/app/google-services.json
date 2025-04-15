@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "107868149205",
+    "firebase_url": "https://krishi-45673-default-rtdb.firebaseio.com",
+    "project_id": "krishi-45673",
+    "storage_bucket": "krishi-45673.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:107868149205:android:447472717d11cb5321595c",
+        "android_client_info": {
+          "package_name": "com.philosia.krishi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "107868149205-jrbrdfvkdbv0m6pcjf5ebdvcf6io5tt6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.philosia.krishi",
+            "certificate_hash": "13e55182a1049359fb1c5ea95a318e1590a9216b"
+          }
+        },
+        {
+          "client_id": "107868149205-mm1fau5dlobtsdemkeq0sj594f2fd82f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.philosia.krishi",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "107868149205-7ptour5orl094434o1a8m6b10r77okr2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG9s8-a09PL5g1HJmhAU6EZq_VlhnInzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "107868149205-7ptour5orl094434o1a8m6b10r77okr2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "107868149205-m2gaooqdkg058bdra8tvrr8p20ike1ju.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.philosia.krishi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
