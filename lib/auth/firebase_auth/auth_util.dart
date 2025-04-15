@@ -58,7 +58,7 @@ final authenticatedUserStream = FirebaseAuth.instance
     )
     .map((user) {
   currentUserDocument = user;
-
+  debugLogAuthenticatedUser();
   return currentUserDocument;
 }).asBroadcastStream();
 

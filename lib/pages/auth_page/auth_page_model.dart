@@ -58,11 +58,16 @@ class AuthPageModel extends FlutterFlowModel<AuthPageWidget> {
   String? Function(BuildContext, String?)?
       passwordConfirmTextControllerValidator;
 
+  final Map<String, DebugDataField> debugGeneratorVariables = {};
+  final Map<String, DebugDataField> debugBackendQueries = {};
+  final Map<String, FlutterFlowModel> widgetBuilderComponents = {};
   @override
   void initState(BuildContext context) {
     passwordVisibility = false;
     passwordCreateVisibility = false;
     passwordConfirmVisibility = false;
+
+    debugLogWidgetClass(this);
   }
 
   @override
@@ -86,4 +91,80 @@ class AuthPageModel extends FlutterFlowModel<AuthPageWidget> {
     passwordConfirmFocusNode?.dispose();
     passwordConfirmTextController?.dispose();
   }
+
+  @override
+  WidgetClassDebugData toWidgetClassDebugData() => WidgetClassDebugData(
+        widgetStates: {
+          'tabBarCurrentIndex': debugSerializeParam(
+            tabBarCurrentIndex,
+            ParamType.int,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=authPage',
+            name: 'int',
+            nullable: true,
+          ),
+          'emailAddressText': debugSerializeParam(
+            emailAddressTextController?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=authPage',
+            name: 'String',
+            nullable: true,
+          ),
+          'passwordText': debugSerializeParam(
+            passwordTextController?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=authPage',
+            name: 'String',
+            nullable: true,
+          ),
+          'displayNameText': debugSerializeParam(
+            displayNameTextController?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=authPage',
+            name: 'String',
+            nullable: true,
+          ),
+          'emailAddressCreateText': debugSerializeParam(
+            emailAddressCreateTextController?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=authPage',
+            name: 'String',
+            nullable: true,
+          ),
+          'passwordCreateText': debugSerializeParam(
+            passwordCreateTextController?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=authPage',
+            name: 'String',
+            nullable: true,
+          ),
+          'passwordConfirmText': debugSerializeParam(
+            passwordConfirmTextController?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=authPage',
+            name: 'String',
+            nullable: true,
+          )
+        },
+        generatorVariables: debugGeneratorVariables,
+        backendQueries: debugBackendQueries,
+        componentStates: {
+          ...widgetBuilderComponents.map(
+            (key, value) => MapEntry(
+              key,
+              value.toWidgetClassDebugData(),
+            ),
+          ),
+        }.withoutNulls,
+        link:
+            'https://app.flutterflow.io/project/krishi-b5r9t8/tab=uiBuilder&page=authPage',
+        searchReference: 'reference=OghhdXRoUGFnZVABWghhdXRoUGFnZQ==',
+        widgetClassName: 'authPage',
+      );
 }

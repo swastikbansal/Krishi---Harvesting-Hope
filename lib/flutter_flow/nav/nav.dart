@@ -25,6 +25,41 @@ const kTransitionInfoKey = '__transition_info__';
 
 GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
+const debugRouteLinkMap = {
+  '/home1':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=home1',
+  '/ai2':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=ai2',
+  '/account4':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=account4',
+  '/forgetPassword':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=forgetPassword',
+  '/onboardingPage':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=onboardingPage',
+  '/authPage':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=authPage',
+  '/appSettings':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=appSettings',
+  '/profilePage':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=profilePage',
+  '/reportBug':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=reportBug',
+  '/requestFeature':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=requestFeature',
+  '/supportPage':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=supportPage',
+  '/tutorialPage':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=tutorialPage',
+  '/selectLanguage':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=selectLanguage',
+  '/datamanagePage':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=datamanagePage',
+  '/sensoralertPage':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=sensoralertPage',
+  '/analytics3':
+      'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=analytics3'
+};
+
 class AppStateNotifier extends ChangeNotifier {
   AppStateNotifier._();
 
@@ -184,6 +219,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
+      observers: [routeObserver],
     );
 
 extension NavParamExtensions on Map<String, String?> {

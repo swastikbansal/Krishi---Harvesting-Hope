@@ -21,12 +21,46 @@ class ForgetPasswordModel extends FlutterFlowModel<ForgetPasswordWidget> {
   String? Function(BuildContext, String?)?
       resetemailAddressTextControllerValidator;
 
+  final Map<String, DebugDataField> debugGeneratorVariables = {};
+  final Map<String, DebugDataField> debugBackendQueries = {};
+  final Map<String, FlutterFlowModel> widgetBuilderComponents = {};
   @override
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+    debugLogWidgetClass(this);
+  }
 
   @override
   void dispose() {
     resetemailAddressFocusNode?.dispose();
     resetemailAddressTextController?.dispose();
   }
+
+  @override
+  WidgetClassDebugData toWidgetClassDebugData() => WidgetClassDebugData(
+        widgetStates: {
+          'resetemailAddressText': debugSerializeParam(
+            resetemailAddressTextController?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=forgetPassword',
+            name: 'String',
+            nullable: true,
+          )
+        },
+        generatorVariables: debugGeneratorVariables,
+        backendQueries: debugBackendQueries,
+        componentStates: {
+          ...widgetBuilderComponents.map(
+            (key, value) => MapEntry(
+              key,
+              value.toWidgetClassDebugData(),
+            ),
+          ),
+        }.withoutNulls,
+        link:
+            'https://app.flutterflow.io/project/krishi-b5r9t8/tab=uiBuilder&page=forgetPassword',
+        searchReference:
+            'reference=Og5mb3JnZXRQYXNzd29yZFABWg5mb3JnZXRQYXNzd29yZA==',
+        widgetClassName: 'forgetPassword',
+      );
 }

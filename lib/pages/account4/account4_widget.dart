@@ -23,7 +23,7 @@ class Account4Widget extends StatefulWidget {
   State<Account4Widget> createState() => _Account4WidgetState();
 }
 
-class _Account4WidgetState extends State<Account4Widget> {
+class _Account4WidgetState extends State<Account4Widget> with RouteAware {
   late Account4Model _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,18 +34,65 @@ class _Account4WidgetState extends State<Account4Widget> {
     _model = createModel(context, () => Account4Model());
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'account4'});
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(Account4Widget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return StreamBuilder<UsersRecord>(
       stream: UsersRecord.getDocument(currentUserReference!),
       builder: (context, snapshot) {
@@ -67,6 +114,16 @@ class _Account4WidgetState extends State<Account4Widget> {
         }
 
         final account4UsersRecord = snapshot.data!;
+        _model.debugBackendQueries['account4UsersRecord_Scaffold_nmpcka54'] =
+            debugSerializeParam(
+          account4UsersRecord,
+          ParamType.Document,
+          link:
+              'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=account4',
+          name: 'users',
+          nullable: false,
+        );
+        debugLogWidgetClass(_model);
 
         return Scaffold(
           key: scaffoldKey,

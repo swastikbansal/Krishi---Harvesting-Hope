@@ -26,7 +26,8 @@ class RequestFeatureWidget extends StatefulWidget {
   State<RequestFeatureWidget> createState() => _RequestFeatureWidgetState();
 }
 
-class _RequestFeatureWidgetState extends State<RequestFeatureWidget> {
+class _RequestFeatureWidgetState extends State<RequestFeatureWidget>
+    with RouteAware {
   late RequestFeatureModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -38,13 +39,22 @@ class _RequestFeatureWidgetState extends State<RequestFeatureWidget> {
 
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'requestFeature'});
-    _model.textController1 ??= TextEditingController();
+    _model.textController1 ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController();
+    _model.textController2 ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.textFieldFocusNode2 ??= FocusNode();
 
-    _model.textController3 ??= TextEditingController();
+    _model.textController3 ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.textFieldFocusNode3 ??= FocusNode();
 
     _model.switchValue = true;
@@ -53,13 +63,61 @@ class _RequestFeatureWidgetState extends State<RequestFeatureWidget> {
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(RequestFeatureWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return StreamBuilder<UsersRecord>(
       stream: UsersRecord.getDocument(currentUserReference!),
       builder: (context, snapshot) {
@@ -81,6 +139,17 @@ class _RequestFeatureWidgetState extends State<RequestFeatureWidget> {
         }
 
         final requestFeatureUsersRecord = snapshot.data!;
+        _model.debugBackendQueries[
+                'requestFeatureUsersRecord_Scaffold_wue8kggv'] =
+            debugSerializeParam(
+          requestFeatureUsersRecord,
+          ParamType.Document,
+          link:
+              'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=requestFeature',
+          name: 'users',
+          nullable: false,
+        );
+        debugLogWidgetClass(_model);
 
         return GestureDetector(
           onTap: () {

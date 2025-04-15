@@ -13,6 +13,14 @@ import 'package:json_path/json_path.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'debug_util.dart';
+
+export 'debug_util.dart';
+
+export 'package:debug_panel_proto/debug_panel_proto.dart';
+
+export 'nav/serialization_util.dart';
+
 import '../main.dart';
 
 import 'lat_lng.dart';
@@ -35,6 +43,8 @@ export 'custom_icons.dart' show FFIcons;
 export 'internationalization.dart' show FFLocalizations;
 export '/backend/firebase_analytics/analytics.dart';
 export 'nav/nav.dart';
+
+final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 T valueOrDefault<T>(T? value, T defaultValue) =>
     (value is String && value.isEmpty) || value == null ? defaultValue : value;

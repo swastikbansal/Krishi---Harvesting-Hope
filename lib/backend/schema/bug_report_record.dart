@@ -94,6 +94,59 @@ class BugReportRecord extends FirestoreRecord {
   bool operator ==(other) =>
       other is BugReportRecord &&
       reference.path.hashCode == other.reference.path.hashCode;
+
+  @override
+  Map<String, DebugDataField> toDebugSerializableMap() => {
+        'reference': debugSerializeParam(
+          reference,
+          ParamType.DocumentReference,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: '',
+          nullable: false,
+        ),
+        'bugtitle': debugSerializeParam(
+          bugtitle,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'bugdescription': debugSerializeParam(
+          bugdescription,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'bugtype': debugSerializeParam(
+          bugtype,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'bugimage': debugSerializeParam(
+          bugimage,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'recreationsteps': debugSerializeParam(
+          recreationsteps,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'deviceinfo': debugSerializeParam(
+          deviceinfo,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        )
+      };
 }
 
 Map<String, dynamic> createBugReportRecordData({

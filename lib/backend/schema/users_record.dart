@@ -128,6 +128,108 @@ class UsersRecord extends FirestoreRecord {
   bool operator ==(other) =>
       other is UsersRecord &&
       reference.path.hashCode == other.reference.path.hashCode;
+
+  @override
+  Map<String, DebugDataField> toDebugSerializableMap() => {
+        'reference': debugSerializeParam(
+          reference,
+          ParamType.DocumentReference,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: '',
+          nullable: false,
+        ),
+        'email': debugSerializeParam(
+          email,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'display_name': debugSerializeParam(
+          displayName,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'photo_url': debugSerializeParam(
+          photoUrl,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'uid': debugSerializeParam(
+          uid,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'created_time': debugSerializeParam(
+          createdTime,
+          ParamType.DateTime,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'DateTime',
+          nullable: true,
+        ),
+        'phone_number': debugSerializeParam(
+          phoneNumber,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'edited_time': debugSerializeParam(
+          editedTime,
+          ParamType.DateTime,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'DateTime',
+          nullable: true,
+        ),
+        'bio': debugSerializeParam(
+          bio,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'user_name': debugSerializeParam(
+          userName,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'user_state': debugSerializeParam(
+          userState,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'user_city': debugSerializeParam(
+          userCity,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'loggedin_time': debugSerializeParam(
+          loggedinTime,
+          ParamType.DateTime,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'DateTime',
+          nullable: true,
+        ),
+        'user_location': debugSerializeParam(
+          userLocation,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        )
+      };
 }
 
 Map<String, dynamic> createUsersRecordData({

@@ -15,15 +15,18 @@ import 'package:shared_preferences_android/shared_preferences_android.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:url_launcher_android/url_launcher_android.dart';
 import 'package:video_player_android/video_player_android.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
 import 'package:google_sign_in_ios/google_sign_in_ios.dart';
 import 'package:image_picker_ios/image_picker_ios.dart';
 import 'package:path_provider_foundation/path_provider_foundation.dart';
+import 'package:pointer_interceptor_ios/pointer_interceptor_ios.dart';
 import 'package:shared_preferences_foundation/shared_preferences_foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:url_launcher_ios/url_launcher_ios.dart';
 import 'package:video_player_avfoundation/video_player_avfoundation.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:file_selector_linux/file_selector_linux.dart';
 import 'package:image_picker_linux/image_picker_linux.dart';
@@ -40,6 +43,7 @@ import 'package:shared_preferences_foundation/shared_preferences_foundation.dart
 import 'package:sqflite/sqflite.dart';
 import 'package:url_launcher_macos/url_launcher_macos.dart';
 import 'package:video_player_avfoundation/video_player_avfoundation.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:file_selector_windows/file_selector_windows.dart';
 import 'package:image_picker_windows/image_picker_windows.dart';
@@ -134,6 +138,15 @@ class _PluginRegistrant {
         );
       }
 
+      try {
+        AndroidWebViewPlatform.registerWith();
+      } catch (err) {
+        print(
+          '`webview_flutter_android` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
     } else if (Platform.isIOS) {
       try {
         FilePickerIO.registerWith();
@@ -181,6 +194,15 @@ class _PluginRegistrant {
       }
 
       try {
+        PointerInterceptorIOS.registerWith();
+      } catch (err) {
+        print(
+          '`pointer_interceptor_ios` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
         SharedPreferencesFoundation.registerWith();
       } catch (err) {
         print(
@@ -212,6 +234,15 @@ class _PluginRegistrant {
       } catch (err) {
         print(
           '`video_player_avfoundation` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
+        WebKitWebViewPlatform.registerWith();
+      } catch (err) {
+        print(
+          '`webview_flutter_wkwebview` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
       }
@@ -358,6 +389,15 @@ class _PluginRegistrant {
       } catch (err) {
         print(
           '`video_player_avfoundation` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
+        WebKitWebViewPlatform.registerWith();
+      } catch (err) {
+        print(
+          '`webview_flutter_wkwebview` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
       }

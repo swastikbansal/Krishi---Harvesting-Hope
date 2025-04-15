@@ -94,6 +94,59 @@ class FeatureRequestRecord extends FirestoreRecord {
   bool operator ==(other) =>
       other is FeatureRequestRecord &&
       reference.path.hashCode == other.reference.path.hashCode;
+
+  @override
+  Map<String, DebugDataField> toDebugSerializableMap() => {
+        'reference': debugSerializeParam(
+          reference,
+          ParamType.DocumentReference,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: '',
+          nullable: false,
+        ),
+        'description': debugSerializeParam(
+          description,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'title': debugSerializeParam(
+          title,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'category': debugSerializeParam(
+          category,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'additional_information': debugSerializeParam(
+          additionalInformation,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'priority_level': debugSerializeParam(
+          priorityLevel,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'beta_tester': debugSerializeParam(
+          betaTester,
+          ParamType.bool,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'bool',
+          nullable: false,
+        )
+      };
 }
 
 Map<String, dynamic> createFeatureRequestRecordData({

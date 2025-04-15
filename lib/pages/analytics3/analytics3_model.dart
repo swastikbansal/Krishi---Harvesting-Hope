@@ -23,20 +23,85 @@ class Analytics3Model extends FlutterFlowModel<Analytics3Widget> {
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for DropDown widget.
-  String? dropDownValue;
+  String? _dropDownValue;
+  set dropDownValue(String? value) {
+    _dropDownValue = value;
+    debugLogWidgetClass(this);
+  }
+
+  String? get dropDownValue => _dropDownValue;
+
   FormFieldController<String>? dropDownValueController;
   // State field(s) for ChoiceChips widget.
   FormFieldController<List<String>>? choiceChipsValueController;
   String? get choiceChipsValue =>
       choiceChipsValueController?.value?.firstOrNull;
-  set choiceChipsValue(String? val) =>
-      choiceChipsValueController?.value = val != null ? [val] : [];
-  // State field(s) for Switch widget.
-  bool? switchValue;
+  set choiceChipsValue(String? val) {
+    choiceChipsValueController?.value = val != null ? [val] : [];
+    debugLogWidgetClass(this);
+  }
 
+  // State field(s) for Switch widget.
+  bool? _switchValue;
+  set switchValue(bool? value) {
+    _switchValue = value;
+    debugLogWidgetClass(this);
+  }
+
+  bool? get switchValue => _switchValue;
+
+  final Map<String, DebugDataField> debugGeneratorVariables = {};
+  final Map<String, DebugDataField> debugBackendQueries = {};
+  final Map<String, FlutterFlowModel> widgetBuilderComponents = {};
   @override
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+    debugLogWidgetClass(this);
+  }
 
   @override
   void dispose() {}
+
+  @override
+  WidgetClassDebugData toWidgetClassDebugData() => WidgetClassDebugData(
+        widgetStates: {
+          'dropDownValue': debugSerializeParam(
+            dropDownValue,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=analytics3',
+            name: 'String',
+            nullable: true,
+          ),
+          'choiceChipsValue': debugSerializeParam(
+            choiceChipsValue,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=analytics3',
+            name: 'String',
+            nullable: true,
+          ),
+          'switchValue': debugSerializeParam(
+            switchValue,
+            ParamType.bool,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=analytics3',
+            name: 'bool',
+            nullable: true,
+          )
+        },
+        generatorVariables: debugGeneratorVariables,
+        backendQueries: debugBackendQueries,
+        componentStates: {
+          ...widgetBuilderComponents.map(
+            (key, value) => MapEntry(
+              key,
+              value.toWidgetClassDebugData(),
+            ),
+          ),
+        }.withoutNulls,
+        link:
+            'https://app.flutterflow.io/project/krishi-b5r9t8/tab=uiBuilder&page=analytics3',
+        searchReference: 'reference=OgphbmFseXRpY3MzUAFaCmFuYWx5dGljczM=',
+        widgetClassName: 'analytics3',
+      );
 }

@@ -15,7 +15,7 @@ class SensorDataWidget extends StatefulWidget {
   State<SensorDataWidget> createState() => _SensorDataWidgetState();
 }
 
-class _SensorDataWidgetState extends State<SensorDataWidget> {
+class _SensorDataWidgetState extends State<SensorDataWidget> with RouteAware {
   late SensorDataModel _model;
 
   @override
@@ -28,19 +28,64 @@ class _SensorDataWidgetState extends State<SensorDataWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => SensorDataModel());
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.maybeDispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(SensorDataWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
     context.watch<FFAppState>();
 
     return Container(

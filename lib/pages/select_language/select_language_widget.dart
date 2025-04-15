@@ -22,7 +22,8 @@ class SelectLanguageWidget extends StatefulWidget {
   State<SelectLanguageWidget> createState() => _SelectLanguageWidgetState();
 }
 
-class _SelectLanguageWidgetState extends State<SelectLanguageWidget> {
+class _SelectLanguageWidgetState extends State<SelectLanguageWidget>
+    with RouteAware {
   late SelectLanguageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,18 +35,65 @@ class _SelectLanguageWidgetState extends State<SelectLanguageWidget> {
 
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'selectLanguage'});
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(SelectLanguageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -71,7 +119,7 @@ class _SelectLanguageWidgetState extends State<SelectLanguageWidget> {
                     shape: BoxShape.rectangle,
                   ),
                   child: Image.asset(
-                    'assets/images/new_(1).png',
+                    'assets/images/Krishi_Darshan_App_Logo.png',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -82,7 +130,7 @@ class _SelectLanguageWidgetState extends State<SelectLanguageWidget> {
                   children: [
                     Text(
                       FFLocalizations.of(context).getText(
-                        'qgtb65uk' /* Vrinda */,
+                        'qgtb65uk' /* Krishi */,
                       ),
                       style: FlutterFlowTheme.of(context).displaySmall.override(
                             fontFamily: 'Space Grotesk',

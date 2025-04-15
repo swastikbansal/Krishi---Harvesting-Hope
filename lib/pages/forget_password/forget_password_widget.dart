@@ -23,7 +23,8 @@ class ForgetPasswordWidget extends StatefulWidget {
   State<ForgetPasswordWidget> createState() => _ForgetPasswordWidgetState();
 }
 
-class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
+class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget>
+    with RouteAware {
   late ForgetPasswordModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -35,21 +36,70 @@ class _ForgetPasswordWidgetState extends State<ForgetPasswordWidget> {
 
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'forgetPassword'});
-    _model.resetemailAddressTextController ??= TextEditingController();
+    _model.resetemailAddressTextController ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.resetemailAddressFocusNode ??= FocusNode();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(ForgetPasswordWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,

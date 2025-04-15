@@ -31,7 +31,7 @@ class AuthPageWidget extends StatefulWidget {
 }
 
 class _AuthPageWidgetState extends State<AuthPageWidget>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, RouteAware {
   late AuthPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -49,23 +49,45 @@ class _AuthPageWidgetState extends State<AuthPageWidget>
       vsync: this,
       length: 2,
       initialIndex: 0,
-    )..addListener(() => safeSetState(() {}));
-    _model.emailAddressTextController ??= TextEditingController();
+    )
+      ..addListener(() => safeSetState(() {}))
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
+    _model.emailAddressTextController ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.emailAddressFocusNode ??= FocusNode();
 
-    _model.passwordTextController ??= TextEditingController();
+    _model.passwordTextController ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.passwordFocusNode ??= FocusNode();
 
-    _model.displayNameTextController ??= TextEditingController();
+    _model.displayNameTextController ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.displayNameFocusNode ??= FocusNode();
 
-    _model.emailAddressCreateTextController ??= TextEditingController();
+    _model.emailAddressCreateTextController ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.emailAddressCreateFocusNode ??= FocusNode();
 
-    _model.passwordCreateTextController ??= TextEditingController();
+    _model.passwordCreateTextController ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.passwordCreateFocusNode ??= FocusNode();
 
-    _model.passwordConfirmTextController ??= TextEditingController();
+    _model.passwordConfirmTextController ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.passwordConfirmFocusNode ??= FocusNode();
 
     animationsMap.addAll({
@@ -122,19 +144,65 @@ class _AuthPageWidgetState extends State<AuthPageWidget>
         ],
       ),
     });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(AuthPageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -185,7 +253,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget>
                                           shape: BoxShape.rectangle,
                                         ),
                                         child: Image.asset(
-                                          'assets/images/new_(1).png',
+                                          'assets/images/Krishi_Darshan_App_Logo.png',
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -195,7 +263,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget>
                                           100.0, 24.0, 0.0, 0.0),
                                       child: Text(
                                         FFLocalizations.of(context).getText(
-                                          'y5vmdmsf' /* Vrinda */,
+                                          'y5vmdmsf' /* Krishi */,
                                         ),
                                         textAlign: TextAlign.start,
                                         style: FlutterFlowTheme.of(context)
@@ -311,7 +379,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget>
                                               Padding(
                                                 padding: EdgeInsetsDirectional
                                                     .fromSTEB(
-                                                        0.0, 0.0, 0.0, 24.0),
+                                                        0.0, 12.0, 0.0, 24.0),
                                                 child: Container(
                                                   width: double.infinity,
                                                   child: TextFormField(
@@ -1073,7 +1141,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget>
                                               Padding(
                                                 padding: EdgeInsetsDirectional
                                                     .fromSTEB(
-                                                        0.0, 0.0, 0.0, 24.0),
+                                                        0.0, 12.0, 0.0, 24.0),
                                                 child: Container(
                                                   width: double.infinity,
                                                   child: TextFormField(

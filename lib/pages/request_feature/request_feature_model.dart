@@ -29,19 +29,40 @@ class RequestFeatureModel extends FlutterFlowModel<RequestFeatureWidget> {
   // State field(s) for ChoiceChips widget.
   FormFieldController<List<String>>? choiceChipsValueController;
   List<String>? get choiceChipsValues => choiceChipsValueController?.value;
-  set choiceChipsValues(List<String>? val) =>
-      choiceChipsValueController?.value = val;
+  set choiceChipsValues(List<String>? val) {
+    choiceChipsValueController?.value = val;
+    debugLogWidgetClass(this);
+  }
+
   // State field(s) for Slider widget.
-  double? sliderValue;
+  double? _sliderValue;
+  set sliderValue(double? value) {
+    _sliderValue = value;
+    debugLogWidgetClass(this);
+  }
+
+  double? get sliderValue => _sliderValue;
+
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode3;
   TextEditingController? textController3;
   String? Function(BuildContext, String?)? textController3Validator;
   // State field(s) for Switch widget.
-  bool? switchValue;
+  bool? _switchValue;
+  set switchValue(bool? value) {
+    _switchValue = value;
+    debugLogWidgetClass(this);
+  }
 
+  bool? get switchValue => _switchValue;
+
+  final Map<String, DebugDataField> debugGeneratorVariables = {};
+  final Map<String, DebugDataField> debugBackendQueries = {};
+  final Map<String, FlutterFlowModel> widgetBuilderComponents = {};
   @override
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+    debugLogWidgetClass(this);
+  }
 
   @override
   void dispose() {
@@ -54,4 +75,74 @@ class RequestFeatureModel extends FlutterFlowModel<RequestFeatureWidget> {
     textFieldFocusNode3?.dispose();
     textController3?.dispose();
   }
+
+  @override
+  WidgetClassDebugData toWidgetClassDebugData() => WidgetClassDebugData(
+        widgetStates: {
+          'textFieldText1': debugSerializeParam(
+            textController1?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=requestFeature',
+            name: 'String',
+            nullable: true,
+          ),
+          'textFieldText2': debugSerializeParam(
+            textController2?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=requestFeature',
+            name: 'String',
+            nullable: true,
+          ),
+          'choiceChipsValues': debugSerializeParam(
+            choiceChipsValues,
+            ParamType.String,
+            isList: true,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=requestFeature',
+            name: 'String',
+            nullable: true,
+          ),
+          'sliderValue': debugSerializeParam(
+            sliderValue,
+            ParamType.double,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=requestFeature',
+            name: 'double',
+            nullable: true,
+          ),
+          'textFieldText3': debugSerializeParam(
+            textController3?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=requestFeature',
+            name: 'String',
+            nullable: true,
+          ),
+          'switchValue': debugSerializeParam(
+            switchValue,
+            ParamType.bool,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=requestFeature',
+            name: 'bool',
+            nullable: true,
+          )
+        },
+        generatorVariables: debugGeneratorVariables,
+        backendQueries: debugBackendQueries,
+        componentStates: {
+          ...widgetBuilderComponents.map(
+            (key, value) => MapEntry(
+              key,
+              value.toWidgetClassDebugData(),
+            ),
+          ),
+        }.withoutNulls,
+        link:
+            'https://app.flutterflow.io/project/krishi-b5r9t8/tab=uiBuilder&page=requestFeature',
+        searchReference:
+            'reference=Og5yZXF1ZXN0RmVhdHVyZVABWg5yZXF1ZXN0RmVhdHVyZQ==',
+        widgetClassName: 'requestFeature',
+      );
 }

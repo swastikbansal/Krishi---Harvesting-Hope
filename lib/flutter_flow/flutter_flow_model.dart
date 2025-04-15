@@ -91,6 +91,15 @@ abstract class FlutterFlowModel<W extends Widget> {
     callback();
     _updateCallback();
   }
+
+  FlutterFlowModel get rootModel => context != null
+      ? DebugFlutterFlowModelContext.maybeOf(context!)?.rootModel ?? this
+      : this;
+  WidgetClassDebugData toWidgetClassDebugData() => WidgetClassDebugData();
+
+  bool? _isRouteVisible;
+  bool get isRouteVisible => rootModel._isRouteVisible ?? false;
+  set isRouteVisible(bool? value) => _isRouteVisible = value;
 }
 
 class FlutterFlowDynamicModels<T extends FlutterFlowModel> {
@@ -153,6 +162,12 @@ class FlutterFlowDynamicModels<T extends FlutterFlowModel> {
       });
     }
   }
+
+  DynamicWidgetClassDebugData toDynamicWidgetClassDebugData() =>
+      DynamicWidgetClassDebugData(
+        componentStates: _childrenModels.map((key, value) =>
+            MapEntry('Key(${key})', value.toWidgetClassDebugData())),
+      );
 }
 
 T? _getDefaultValue<T>() {

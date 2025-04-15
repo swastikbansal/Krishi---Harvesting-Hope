@@ -23,7 +23,8 @@ class DatamanagePageWidget extends StatefulWidget {
   State<DatamanagePageWidget> createState() => _DatamanagePageWidgetState();
 }
 
-class _DatamanagePageWidgetState extends State<DatamanagePageWidget> {
+class _DatamanagePageWidgetState extends State<DatamanagePageWidget>
+    with RouteAware {
   late DatamanagePageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -36,18 +37,65 @@ class _DatamanagePageWidgetState extends State<DatamanagePageWidget> {
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'datamanagePage'});
     _model.switchValue = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(DatamanagePageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -796,7 +844,9 @@ class _DatamanagePageWidgetState extends State<DatamanagePageWidget> {
                                             BorderRadius.circular(12.0),
                                       ),
                                     ),
-                                  ].divide(SizedBox(height: 12.0)),
+                                  ]
+                                      .divide(SizedBox(height: 24.0))
+                                      .addToStart(SizedBox(height: 12.0)),
                                 ),
                               ],
                             ),

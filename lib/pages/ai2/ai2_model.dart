@@ -32,12 +32,23 @@ class Ai2Model extends FlutterFlowModel<Ai2Widget> {
   TextEditingController? textController2;
   String? Function(BuildContext, String?)? textController2Validator;
   // Stores action output result for [Backend Call - API (Ultron)] action in ToggleIcon widget.
-  ApiCallResponse? apiResultyc4;
+  ApiCallResponse? _apiResultyc4;
+  set apiResultyc4(ApiCallResponse? value) {
+    _apiResultyc4 = value;
+    debugLogWidgetClass(this);
+  }
 
+  ApiCallResponse? get apiResultyc4 => _apiResultyc4;
+
+  final Map<String, DebugDataField> debugGeneratorVariables = {};
+  final Map<String, DebugDataField> debugBackendQueries = {};
+  final Map<String, FlutterFlowModel> widgetBuilderComponents = {};
   @override
   void initState(BuildContext context) {
     columnController = ScrollController();
     listViewController = ScrollController();
+
+    debugLogWidgetClass(this);
   }
 
   @override
@@ -50,4 +61,50 @@ class Ai2Model extends FlutterFlowModel<Ai2Widget> {
     textFieldFocusNode2?.dispose();
     textController2?.dispose();
   }
+
+  @override
+  WidgetClassDebugData toWidgetClassDebugData() => WidgetClassDebugData(
+        widgetStates: {
+          'textFieldText1': debugSerializeParam(
+            textController1?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=ai2',
+            name: 'String',
+            nullable: true,
+          ),
+          'textFieldText2': debugSerializeParam(
+            textController2?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=ai2',
+            name: 'String',
+            nullable: true,
+          )
+        },
+        actionOutputs: {
+          'apiResultyc4': debugSerializeParam(
+            apiResultyc4,
+            ParamType.ApiResponse,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=ai2',
+            name: 'ApiCallResponse',
+            nullable: true,
+          )
+        },
+        generatorVariables: debugGeneratorVariables,
+        backendQueries: debugBackendQueries,
+        componentStates: {
+          ...widgetBuilderComponents.map(
+            (key, value) => MapEntry(
+              key,
+              value.toWidgetClassDebugData(),
+            ),
+          ),
+        }.withoutNulls,
+        link:
+            'https://app.flutterflow.io/project/krishi-b5r9t8/tab=uiBuilder&page=ai2',
+        searchReference: 'reference=OgNhaTJQAVoDYWky',
+        widgetClassName: 'ai2',
+      );
 }

@@ -30,7 +30,7 @@ class OnboardingPageWidget extends StatefulWidget {
 }
 
 class _OnboardingPageWidgetState extends State<OnboardingPageWidget>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, RouteAware {
   late OnboardingPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -331,19 +331,65 @@ class _OnboardingPageWidgetState extends State<OnboardingPageWidget>
         ],
       ),
     });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(OnboardingPageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -358,8 +404,11 @@ class _OnboardingPageWidgetState extends State<OnboardingPageWidget>
           child: Stack(
             children: [
               PageView(
-                controller: _model.pageViewController ??=
-                    PageController(initialPage: 0),
+                controller:
+                    _model.pageViewController ??= PageController(initialPage: 0)
+                      ..addListener(() {
+                        debugLogWidgetClass(_model);
+                      }),
                 scrollDirection: Axis.horizontal,
                 children: [
                   Column(
@@ -386,7 +435,7 @@ class _OnboardingPageWidgetState extends State<OnboardingPageWidget>
                           children: [
                             Text(
                               FFLocalizations.of(context).getText(
-                                '48290it7' /* Welcome to Vrinda 🌱 */,
+                                '48290it7' /* Welcome to Krishi 🌱 */,
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .headlineSmall
@@ -993,7 +1042,10 @@ class _OnboardingPageWidgetState extends State<OnboardingPageWidget>
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                   child: smooth_page_indicator.SmoothPageIndicator(
                     controller: _model.pageViewController ??=
-                        PageController(initialPage: 0),
+                        PageController(initialPage: 0)
+                          ..addListener(() {
+                            debugLogWidgetClass(_model);
+                          }),
                     count: 4,
                     axisDirection: Axis.horizontal,
                     onDotClicked: (i) async {

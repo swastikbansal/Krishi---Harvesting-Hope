@@ -17,7 +17,8 @@ class AiBottomSheetWidget extends StatefulWidget {
   State<AiBottomSheetWidget> createState() => _AiBottomSheetWidgetState();
 }
 
-class _AiBottomSheetWidgetState extends State<AiBottomSheetWidget> {
+class _AiBottomSheetWidgetState extends State<AiBottomSheetWidget>
+    with RouteAware {
   late AiBottomSheetModel _model;
 
   @override
@@ -30,19 +31,65 @@ class _AiBottomSheetWidgetState extends State<AiBottomSheetWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => AiBottomSheetModel());
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.maybeDispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(AiBottomSheetWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return Container(
       decoration: BoxDecoration(
         color: FlutterFlowTheme.of(context).secondaryBackground,
@@ -89,7 +136,7 @@ class _AiBottomSheetWidgetState extends State<AiBottomSheetWidget> {
               alignment: AlignmentDirectional(0.0, 0.0),
               child: Text(
                 FFLocalizations.of(context).getText(
-                  'poiwhbx8' /* Upload to Vrinda AI */,
+                  'poiwhbx8' /* Upload to Krishi AI */,
                 ),
                 textAlign: TextAlign.center,
                 style: FlutterFlowTheme.of(context).titleLarge.override(

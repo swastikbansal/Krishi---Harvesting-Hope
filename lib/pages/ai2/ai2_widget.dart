@@ -29,7 +29,7 @@ class Ai2Widget extends StatefulWidget {
   State<Ai2Widget> createState() => _Ai2WidgetState();
 }
 
-class _Ai2WidgetState extends State<Ai2Widget> {
+class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
   late Ai2Model _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -40,24 +40,75 @@ class _Ai2WidgetState extends State<Ai2Widget> {
     _model = createModel(context, () => Ai2Model());
 
     logFirebaseEvent('screen_view', parameters: {'screen_name': 'ai2'});
-    _model.textController1 ??= TextEditingController();
+    _model.textController1 ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController();
+    _model.textController2 ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.textFieldFocusNode2 ??= FocusNode();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(Ai2Widget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -282,7 +333,7 @@ class _Ai2WidgetState extends State<Ai2Widget> {
           ),
           title: Text(
             FFLocalizations.of(context).getText(
-              'bglmktn8' /* Vrinda AI */,
+              'bglmktn8' /* Krishi AI */,
             ),
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Space Grotesk',
@@ -330,6 +381,18 @@ class _Ai2WidgetState extends State<Ai2Widget> {
                   child: Builder(
                     builder: (context) {
                       final chat = FFAppState().chatlist.toList();
+                      _model.debugGeneratorVariables[
+                              'chat${chat.length > 100 ? ' (first 100)' : ''}'] =
+                          debugSerializeParam(
+                        chat.take(100),
+                        ParamType.JSON,
+                        isList: true,
+                        link:
+                            'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=ai2',
+                        name: 'dynamic',
+                        nullable: false,
+                      );
+                      debugLogWidgetClass(_model);
 
                       return ListView.builder(
                         padding: EdgeInsets.zero,

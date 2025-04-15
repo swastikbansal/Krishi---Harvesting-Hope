@@ -55,8 +55,13 @@ class ProfilePageModel extends FlutterFlowModel<ProfilePageWidget> {
   TextEditingController? textController7;
   String? Function(BuildContext, String?)? textController7Validator;
 
+  final Map<String, DebugDataField> debugGeneratorVariables = {};
+  final Map<String, DebugDataField> debugBackendQueries = {};
+  final Map<String, FlutterFlowModel> widgetBuilderComponents = {};
   @override
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+    debugLogWidgetClass(this);
+  }
 
   @override
   void dispose() {
@@ -81,4 +86,80 @@ class ProfilePageModel extends FlutterFlowModel<ProfilePageWidget> {
     textFieldFocusNode7?.dispose();
     textController7?.dispose();
   }
+
+  @override
+  WidgetClassDebugData toWidgetClassDebugData() => WidgetClassDebugData(
+        widgetStates: {
+          'textFieldText1': debugSerializeParam(
+            textController1?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=profilePage',
+            name: 'String',
+            nullable: true,
+          ),
+          'textFieldText2': debugSerializeParam(
+            textController2?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=profilePage',
+            name: 'String',
+            nullable: true,
+          ),
+          'textFieldText3': debugSerializeParam(
+            textController3?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=profilePage',
+            name: 'String',
+            nullable: true,
+          ),
+          'textFieldText4': debugSerializeParam(
+            textController4?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=profilePage',
+            name: 'String',
+            nullable: true,
+          ),
+          'textFieldText5': debugSerializeParam(
+            textController5?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=profilePage',
+            name: 'String',
+            nullable: true,
+          ),
+          'textFieldText6': debugSerializeParam(
+            textController6?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=profilePage',
+            name: 'String',
+            nullable: true,
+          ),
+          'textFieldText7': debugSerializeParam(
+            textController7?.text,
+            ParamType.String,
+            link:
+                'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=profilePage',
+            name: 'String',
+            nullable: true,
+          )
+        },
+        generatorVariables: debugGeneratorVariables,
+        backendQueries: debugBackendQueries,
+        componentStates: {
+          ...widgetBuilderComponents.map(
+            (key, value) => MapEntry(
+              key,
+              value.toWidgetClassDebugData(),
+            ),
+          ),
+        }.withoutNulls,
+        link:
+            'https://app.flutterflow.io/project/krishi-b5r9t8/tab=uiBuilder&page=profilePage',
+        searchReference: 'reference=Ogtwcm9maWxlUGFnZVABWgtwcm9maWxlUGFnZQ==',
+        widgetClassName: 'profilePage',
+      );
 }

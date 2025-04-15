@@ -31,7 +31,7 @@ class Home1Widget extends StatefulWidget {
 }
 
 class _Home1WidgetState extends State<Home1Widget>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, RouteAware {
   late Home1Model _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -103,19 +103,66 @@ class _Home1WidgetState extends State<Home1Widget>
           !anim.applyInitialState),
       this,
     );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(Home1Widget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -621,7 +668,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(8.0),
                                     child: Image.asset(
-                                      'assets/images/de392ea3-f3e3-4d55-98e4-b6d1a7b9e5eb.png',
+                                      'assets/images/ChatGPT_Image_Apr_15,_2025,_11_29_31_PM.png',
                                       width: double.infinity,
                                       height: double.infinity,
                                       fit: BoxFit.cover,
@@ -632,9 +679,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 6.0, 0.0, 2.0),
                                   child: Text(
-                                    FFLocalizations.of(context).getText(
-                                      '0ahock9c' /* 50% */,
-                                    ),
+                                    FFAppState().moisturevalue,
                                     textAlign: TextAlign.center,
                                     style: FlutterFlowTheme.of(context)
                                         .titleSmall
@@ -720,7 +765,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(8.0),
                                     child: Image.asset(
-                                      'assets/images/realistic_pH_meter_icon_to_indicate_soil_pH.jpg',
+                                      'assets/images/ChatGPT_Image_Apr_15,_2025,_11_09_42_PM.png',
                                       width: double.infinity,
                                       height: double.infinity,
                                       fit: BoxFit.cover,
@@ -819,7 +864,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(8.0),
                                     child: Image.asset(
-                                      'assets/images/NPK_in_soil_indicator.jpg',
+                                      'assets/images/ChatGPT_Image_Apr_15,_2025,_11_22_04_PM.png',
                                       width: double.infinity,
                                       height: double.infinity,
                                       fit: BoxFit.cover,
@@ -918,7 +963,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(8.0),
                                     child: Image.asset(
-                                      'assets/images/realistic_oil_Health_Indicator_icon.jpg',
+                                      'assets/images/ChatGPT_Image_Apr_15,_2025,_11_38_41_PM.png',
                                       width: double.infinity,
                                       height: double.infinity,
                                       fit: BoxFit.cover,
@@ -929,9 +974,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 4.0),
                                   child: Text(
-                                    FFLocalizations.of(context).getText(
-                                      '92kxmle8' /* Optimal */,
-                                    ),
+                                    FFAppState().ECvalue,
                                     textAlign: TextAlign.center,
                                     style: FlutterFlowTheme.of(context)
                                         .titleSmall
@@ -952,20 +995,20 @@ class _Home1WidgetState extends State<Home1Widget>
                                       8.0, 0.0, 8.0, 0.0),
                                   child: Text(
                                     FFLocalizations.of(context).getText(
-                                      'yjay8kzp' /* Soil Health */,
+                                      'yjay8kzp' /* Electrical Conductivity */,
                                     ),
                                     textAlign: TextAlign.center,
                                     style: FlutterFlowTheme.of(context)
-                                        .labelMedium
+                                        .labelSmall
                                         .override(
                                           fontFamily:
                                               FlutterFlowTheme.of(context)
-                                                  .labelMediumFamily,
+                                                  .labelSmallFamily,
                                           letterSpacing: 0.0,
                                           useGoogleFonts: GoogleFonts.asMap()
                                               .containsKey(
                                                   FlutterFlowTheme.of(context)
-                                                      .labelMediumFamily),
+                                                      .labelSmallFamily),
                                         ),
                                   ),
                                 ),
@@ -986,7 +1029,7 @@ class _Home1WidgetState extends State<Home1Widget>
                         scrollDirection: Axis.horizontal,
                         autoPlay: true,
                         autoPlayAnimationDuration: Duration(milliseconds: 1000),
-                        autoPlayInterval: Duration(milliseconds: (1000 + 4000)),
+                        autoPlayInterval: Duration(milliseconds: (1000 + 2000)),
                         autoPlayCurve: Curves.linear,
                         pauseAutoPlayInFiniteScroll: true,
                         onPageChanged: (index, _) =>
@@ -1330,7 +1373,8 @@ class _Home1WidgetState extends State<Home1Widget>
                                 onTap: () async {
                                   logFirebaseEvent(
                                       'HOME1_PAGE_Container_n1zhu7br_ON_TAP');
-                                  await launchURL('https://agricoopgov.org/');
+                                  await launchURL(
+                                      'https://www.google.com/maps/search/fertilizer+suppliers+near+me');
                                 },
                                 child: Material(
                                   color: Colors.transparent,
@@ -1391,7 +1435,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                           padding: EdgeInsets.all(8.0),
                                           child: Text(
                                             FFLocalizations.of(context).getText(
-                                              '6zxagodk' /* New Government Schemes */,
+                                              '6zxagodk' /* Connect and find Local Supplie... */,
                                             ),
                                             textAlign: TextAlign.center,
                                             style: FlutterFlowTheme.of(context)
@@ -1470,27 +1514,14 @@ class _Home1WidgetState extends State<Home1Widget>
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
                                           ),
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              final query = 'fertilizer+suppliers+near+me';
-                                              final url =
-                                                  'https://www.google.com/maps/search/$query';
-                                              logFirebaseEvent('HOME1_PAGE_Image_mggu5owy_ON_TAP');
-                                              await launchURL('$url');
-                                            },
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              child: Image.asset(
-                                                'assets/images/ChatGPT_Image_Apr_15,_2025,_10_34_49_PM.png',
-                                                width: double.infinity,
-                                                height: double.infinity,
-                                                fit: BoxFit.fill,
-                                              ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.asset(
+                                              'assets/images/ChatGPT_Image_Apr_15,_2025,_10_39_29_PM.png',
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              fit: BoxFit.fill,
                                             ),
                                           ),
                                         ),
@@ -1498,7 +1529,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                           padding: EdgeInsets.all(8.0),
                                           child: Text(
                                             FFLocalizations.of(context).getText(
-                                              '6zxagodk' /* Connect and find Local Supplie... */,
+                                              'ainbm5s0' /* Pest Management Guide */,
                                             ),
                                             textAlign: TextAlign.center,
                                             style: FlutterFlowTheme.of(context)
@@ -1582,7 +1613,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
                                             child: Image.asset(
-                                              'assets/images/ChatGPT_Image_Apr_14,_2025,_02_00_19_AM.png',
+                                              'assets/images/ChatGPT_Image_Apr_15,_2025,_10_42_15_PM.png',
                                               width: double.infinity,
                                               height: double.infinity,
                                               fit: BoxFit.fill,
@@ -1677,7 +1708,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
                                             child: Image.asset(
-                                              'assets/images/ChatGPT_Image_Apr_14,_2025,_02_04_13_AM.png',
+                                              'assets/images/ChatGPT_Image_Apr_15,_2025,_10_42_27_PM.png',
                                               width: double.infinity,
                                               height: double.infinity,
                                               fit: BoxFit.fill,
@@ -1771,7 +1802,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
                                             child: Image.asset(
-                                              'assets/images/ChatGPT_Image_Apr_14,_2025,_02_08_08_AM.png',
+                                              'assets/images/ChatGPT_Image_Apr_15,_2025,_11_02_26_PM.png',
                                               width: double.infinity,
                                               height: double.infinity,
                                               fit: BoxFit.fill,
@@ -1822,7 +1853,7 @@ class _Home1WidgetState extends State<Home1Widget>
                               autoPlayAnimationDuration:
                                   Duration(milliseconds: 1000),
                               autoPlayInterval:
-                                  Duration(milliseconds: (1000 + 4000)),
+                                  Duration(milliseconds: (1000 + 2000)),
                               autoPlayCurve: Curves.linear,
                               pauseAutoPlayInFiniteScroll: true,
                               onPageChanged: (index, _) =>

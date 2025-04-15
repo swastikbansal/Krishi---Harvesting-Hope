@@ -11,6 +11,7 @@ abstract class FirestoreRecord {
   FirestoreRecord(this.reference, this.snapshotData);
   Map<String, dynamic> snapshotData;
   DocumentReference reference;
+  Map<String, DebugDataField> toDebugSerializableMap();
 }
 
 abstract class FFFirebaseStruct extends BaseStruct {

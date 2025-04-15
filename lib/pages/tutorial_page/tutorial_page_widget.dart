@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +23,8 @@ class TutorialPageWidget extends StatefulWidget {
   State<TutorialPageWidget> createState() => _TutorialPageWidgetState();
 }
 
-class _TutorialPageWidgetState extends State<TutorialPageWidget> {
+class _TutorialPageWidgetState extends State<TutorialPageWidget>
+    with RouteAware {
   late TutorialPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,18 +36,65 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
 
     logFirebaseEvent('screen_view',
         parameters: {'screen_name': 'tutorialPage'});
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(TutorialPageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -120,7 +169,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Image.asset(
-                                  'assets/images/new_(2).png',
+                                  'assets/images/ded.png',
                                   width: double.infinity,
                                   height: 500.0,
                                   fit: BoxFit.contain,
@@ -132,7 +181,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   0.0, 8.0, 0.0, 4.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  'sp7uv8ah' /* Signify - Breaking Barriers, B... */,
+                                  'sp7uv8ah' /* Welcome to Krishi 🌱 */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -150,7 +199,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   8.0, 0.0, 8.0, 0.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  '3boeqcfl' /* Welcome to Signify, where comm... */,
+                                  '3boeqcfl' /* Nurturing Nature with Technolo... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -185,10 +234,10 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.asset(
-                                'assets/images/Designer.jpg',
+                                'assets/images/soil_sensor_images.jpg',
                                 width: double.infinity,
                                 height: 500.0,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                               ),
                             ),
                             Padding(
@@ -196,7 +245,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   0.0, 8.0, 0.0, 4.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  'ts14oxkq' /* Empower Communication, Anytime... */,
+                                  'ts14oxkq' /* Real-Time Sensor Monitoring */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -214,7 +263,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   8.0, 0.0, 8.0, 0.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  'a51ud4ke' /* Seamlessly translate between I... */,
+                                  'a51ud4ke' /* Instantly view live soil metri... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -258,11 +307,14 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12.0),
-                                child: Image.asset(
-                                  'assets/images/dffdgfdg.png',
+                                child: CachedNetworkImage(
+                                  fadeInDuration: Duration(milliseconds: 500),
+                                  fadeOutDuration: Duration(milliseconds: 500),
+                                  imageUrl:
+                                      'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHw0fHxkYXRhfGVufDB8fHx8MTc0NDczOTM3N3ww&ixlib=rb-4.0.3&q=80&w=1080',
                                   width: double.infinity,
                                   height: 500.0,
-                                  fit: BoxFit.contain,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
@@ -271,7 +323,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   0.0, 8.0, 0.0, 4.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  '7nkemv7n' /* Tailored to Your Needs */,
+                                  '7nkemv7n' /* Historical Data Insights */,
                                 ),
                                 style: FlutterFlowTheme.of(context)
                                     .titleMedium
@@ -288,7 +340,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   8.0, 0.0, 8.0, 0.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  'u47iyvwa' /* Add custom signs, choose regio... */,
+                                  'u47iyvwa' /* Explore trends over time with ... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -324,7 +376,8 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                               width: double.infinity,
                               height: 500.0,
                               decoration: BoxDecoration(
-                                color: Color(0xFFFCFCFC),
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
                                 borderRadius: BorderRadius.circular(12.0),
                                 border: Border.all(
                                   color: FlutterFlowTheme.of(context).alternate,
@@ -335,7 +388,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                 children: [
                                   Expanded(
                                     child: Lottie.asset(
-                                      'assets/jsons/man_using_devices_animation.json',
+                                      'assets/jsons/AI_Text_Animation_Krishi.json',
                                       width: 300.0,
                                       height: 500.0,
                                       fit: BoxFit.contain,
@@ -350,7 +403,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   0.0, 8.0, 0.0, 4.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  'lranjb2x' /* Voice to Sign Page - Speak or ... */,
+                                  'lranjb2x' /* AI-Powered Analysis */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -368,7 +421,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   8.0, 0.0, 8.0, 0.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  '2huen4xn' /* Effortlessly communicate with ... */,
+                                  '2huen4xn' /* Receive actionable insights an... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -414,7 +467,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Lottie.asset(
-                                    'assets/jsons/camera_picture_click_on_tap_animation.json',
+                                    'assets/jsons/AI_Data_Analysis_Animation_Best.json',
                                     width: 300.0,
                                     height: 500.0,
                                     fit: BoxFit.contain,
@@ -428,7 +481,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   0.0, 8.0, 0.0, 4.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  'qk5f513v' /* Sign to Voice Page - Capture S... */,
+                                  'qk5f513v' /* Cloud Sync & Data Backup */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -446,7 +499,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   8.0, 0.0, 8.0, 0.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  '3doxuff2' /* Bridge the gap effortlessly. U... */,
+                                  '3doxuff2' /* Securely store, sync, and acce... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -489,7 +542,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                 ),
                               ),
                               child: Lottie.asset(
-                                'assets/jsons/peace_of_mind_girl_animation.json',
+                                'assets/jsons/Meditating_Developer.json',
                                 width: 300.0,
                                 height: 500.0,
                                 fit: BoxFit.contain,
@@ -501,7 +554,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   0.0, 8.0, 0.0, 4.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  '6jcdk428' /* Education Page - Learn, Explor... */,
+                                  '6jcdk428' /* Customizable Alerts & Notifica... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -519,7 +572,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   8.0, 0.0, 8.0, 0.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  'wud9rqp2' /* Empower your ISL journey! The ... */,
+                                  'wud9rqp2' /* Set personalized thresholds an... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -564,11 +617,11 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
-                                child: Image.network(
-                                  'https://images.unsplash.com/photo-1693278615140-4523982bae77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHwxMHx8ZGljdGlvbmFyeXxlbnwwfHx8fDE3MzM4MzU2MTR8MA&ixlib=rb-4.0.3&q=80&w=1080',
+                                child: Image.asset(
+                                  'assets/images/ChatGPT_Image_Apr_15,_2025,_10_34_49_PM.png',
                                   width: double.infinity,
                                   height: 500.0,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                             ),
@@ -577,7 +630,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   0.0, 8.0, 0.0, 4.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  'bygyl9qy' /* Dictionary Page - Explore ISL ... */,
+                                  'bygyl9qy' /* Local Supplier Connections */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -598,7 +651,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   8.0, 0.0, 8.0, 0.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  'bxj52c0f' /* Your comprehensive ISL Diction... */,
+                                  'bxj52c0f' /* Seamlessly connect with local ... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -643,11 +696,11 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
-                                child: Image.network(
-                                  'https://images.unsplash.com/photo-1527525443983-6e60c75fff46?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHw4fHxjb21tdW5pdHl8ZW58MHx8fHwxNzMzODM1NzQzfDA&ixlib=rb-4.0.3&q=80&w=1080',
+                                child: Image.asset(
+                                  'assets/images/ChatGPT_Image_Apr_15,_2025,_11_02_26_PM.png',
                                   width: double.infinity,
                                   height: 500.0,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                             ),
@@ -656,7 +709,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   0.0, 8.0, 0.0, 4.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  '50reiwot' /* Community Page - Be Part of th... */,
+                                  '50reiwot' /* Be aware of new rules and sche... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
@@ -674,7 +727,7 @@ class _TutorialPageWidgetState extends State<TutorialPageWidget> {
                                   8.0, 0.0, 8.0, 0.0),
                               child: Text(
                                 FFLocalizations.of(context).getText(
-                                  '4a0u9b3l' /* Join a community of ISL enthus... */,
+                                  '4a0u9b3l' /* Stay informed about subsidies ... */,
                                 ),
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)

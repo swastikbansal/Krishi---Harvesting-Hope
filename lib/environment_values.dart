@@ -25,4 +25,6 @@ class FFDevEnvironmentValues {
       print('Error loading environment values: $e');
     }
   }
+
+  Map<String, DebugDataField> toDebugSerializableMap() => {};
 }

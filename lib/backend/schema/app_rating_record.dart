@@ -76,6 +76,38 @@ class AppRatingRecord extends FirestoreRecord {
   bool operator ==(other) =>
       other is AppRatingRecord &&
       reference.path.hashCode == other.reference.path.hashCode;
+
+  @override
+  Map<String, DebugDataField> toDebugSerializableMap() => {
+        'reference': debugSerializeParam(
+          reference,
+          ParamType.DocumentReference,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: '',
+          nullable: false,
+        ),
+        'email': debugSerializeParam(
+          email,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        ),
+        'rating': debugSerializeParam(
+          rating,
+          ParamType.int,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'int',
+          nullable: false,
+        ),
+        'comment': debugSerializeParam(
+          comment,
+          ParamType.String,
+          link: 'https://app.flutterflow.io/project/krishi-b5r9t8?tab=database',
+          name: 'String',
+          nullable: false,
+        )
+      };
 }
 
 Map<String, dynamic> createAppRatingRecordData({

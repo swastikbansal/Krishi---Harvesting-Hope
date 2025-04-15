@@ -39,6 +39,10 @@ dependencies:
   cloud_firestore_web: 4.3.4
   collection: 1.19.0
   csslib: 0.17.3
+  debug_panel_proto: 
+    git:
+      url: https://github.com/FlutterFlow/debug_panel_proto.git
+      ref: v0.1.4
   dropdown_button2: 2.3.9
   easy_debounce: 2.0.1
   emoji_flag_converter: 1.1.0
@@ -144,12 +148,22 @@ dependencies:
 
 dependency_overrides:
   http: 1.2.2
+  pointer_interceptor: 0.10.1+2
+  pointer_interceptor_ios: 0.10.1
+  pointer_interceptor_platform_interface: 0.10.0+1
+  pointer_interceptor_web: 0.10.2+1
+  protobuf: 3.1.0
   uuid: ^4.0.0
+  web: 1.1.0
   win32: 5.5.1
 
 dev_dependencies:
   flutter_launcher_icons: 0.13.1
   flutter_lints: 4.0.0
+  flutterflow_debug_panel: 
+    git:
+      url: https://github.com/FlutterFlow/debug_panel_devtool.git
+      ref: v0.2.2
   image: 4.2.0
   lints: 4.0.0
   flutter_test:

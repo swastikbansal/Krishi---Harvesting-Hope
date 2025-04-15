@@ -30,7 +30,7 @@ class ProfilePageWidget extends StatefulWidget {
 }
 
 class _ProfilePageWidgetState extends State<ProfilePageWidget>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, RouteAware {
   late ProfilePageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -50,14 +50,20 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
 
     _model.textFieldFocusNode3 ??= FocusNode();
 
-    _model.textController4 ??= TextEditingController(text: currentPhoneNumber);
+    _model.textController4 ??= TextEditingController(text: currentPhoneNumber)
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.textFieldFocusNode4 ??= FocusNode();
 
     _model.textFieldFocusNode5 ??= FocusNode();
 
     _model.textFieldFocusNode6 ??= FocusNode();
 
-    _model.textController7 ??= TextEditingController();
+    _model.textController7 ??= TextEditingController()
+      ..addListener(() {
+        debugLogWidgetClass(_model);
+      });
     _model.textFieldFocusNode7 ??= FocusNode();
 
     animationsMap.addAll({
@@ -74,19 +80,65 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
         ],
       ),
     });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
+
     _model.dispose();
 
     super.dispose();
   }
 
   @override
+  void didUpdateWidget(ProfilePageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _model.widget = widget;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = DebugModalRoute.of(context);
+    if (route != null) {
+      routeObserver.subscribe(this, route);
+    }
+    debugLogGlobalProperty(context);
+  }
+
+  @override
+  void didPopNext() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPush() {
+    if (mounted && DebugFlutterFlowModelContext.maybeOf(context) == null) {
+      setState(() => _model.isRouteVisible = true);
+      debugLogWidgetClass(_model);
+    }
+  }
+
+  @override
+  void didPop() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
+  void didPushNext() {
+    _model.isRouteVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    DebugFlutterFlowModelContext.maybeOf(context)
+        ?.parentModelCallback
+        ?.call(_model);
+
     return StreamBuilder<UsersRecord>(
       stream: UsersRecord.getDocument(currentUserReference!),
       builder: (context, snapshot) {
@@ -108,6 +160,16 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
         }
 
         final profilePageUsersRecord = snapshot.data!;
+        _model.debugBackendQueries['profilePageUsersRecord_Scaffold_5mevx3yb'] =
+            debugSerializeParam(
+          profilePageUsersRecord,
+          ParamType.Document,
+          link:
+              'https://app.flutterflow.io/project/krishi-b5r9t8?tab=uiBuilder&page=profilePage',
+          name: 'users',
+          nullable: false,
+        );
+        debugLogWidgetClass(_model);
 
         return GestureDetector(
           onTap: () {
