@@ -1,6 +1,0 @@
-NSLocationWhenInUseUsageDescription = "توهان جي جڳهه لاءِ صحيح موسم جي رپورٽ جي اجازت ڏئي ٿي";
-NSCameraUsageDescription = "تصويرون ڪڍڻ لاءِ، هن ايپ کي ڪئميرا تائين رسائي جي اجازت جي ضرورت آهي.";
-NSPhotoLibraryUsageDescription = "ڊيٽا اپلوڊ ڪرڻ لاءِ، هن ايپ کي فوٽو لائبريري تائين رسائي جي اجازت جي ضرورت آهي.";
-PermissionGroupNotification = "ايپ کي اطلاعن کي ڏيکارڻ جي اجازت ڏيو.";
-NSBluetoothAlwaysUsageDescription = "سينسر ڊيٽا حاصل ڪرڻ لاءِ، هن ايپ کي بلوٽوٿ تائين رسائي جي اجازت جي ضرورت آهي.";
-NSMicrophoneUsageDescription = "تقرير جا جواب حاصل ڪرڻ لاءِ، هن ايپ کي مائڪروفون تائين رسائي جي اجازت جي ضرورت آهي.";
