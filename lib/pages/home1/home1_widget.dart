@@ -1476,9 +1476,9 @@ class _Home1WidgetState extends State<Home1Widget>
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
-                                              final query = 'fertilizer suppliers near me';
+                                              final query = 'fertilizer+suppliers+near+me';
                                               final url =
-                                                  'https://www.google.com/search?q=$query';
+                                                  'https://www.google.com/maps/search/$query';
                                               logFirebaseEvent('HOME1_PAGE_Image_mggu5owy_ON_TAP');
                                               await launchURL('$url');
                                             },
