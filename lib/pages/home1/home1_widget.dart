@@ -679,7 +679,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 6.0, 0.0, 2.0),
                                   child: Text(
-                                    FFAppState().moisturevalue,
+                                    '${FFAppState().moisturevalue} %',
                                     textAlign: TextAlign.center,
                                     style: FlutterFlowTheme.of(context)
                                         .titleSmall
@@ -875,21 +875,20 @@ class _Home1WidgetState extends State<Home1Widget>
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 6.0, 0.0, 2.0),
                                   child: Text(
-                                    FFLocalizations.of(context).getText(
-                                      'b2gckazf' /* N: 35 | P: 45 | K: 66 */,
-                                    ),
+                                    'N: ${FFAppState().Nvalue} | P: ${FFAppState().Pvalue} | K: ${FFAppState().Kvalue}',
                                     textAlign: TextAlign.center,
                                     style: FlutterFlowTheme.of(context)
-                                        .titleSmall
+                                        .labelSmall
                                         .override(
                                           fontFamily:
                                               FlutterFlowTheme.of(context)
-                                                  .titleSmallFamily,
+                                                  .labelSmallFamily,
+                                          fontSize: 16.0,
                                           letterSpacing: 0.0,
                                           useGoogleFonts: GoogleFonts.asMap()
                                               .containsKey(
                                                   FlutterFlowTheme.of(context)
-                                                      .titleSmallFamily),
+                                                      .labelSmallFamily),
                                         ),
                                   ),
                                 ),
@@ -974,7 +973,7 @@ class _Home1WidgetState extends State<Home1Widget>
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 4.0),
                                   child: Text(
-                                    FFAppState().ECvalue,
+                                    '${FFAppState().ECvalue}   μs/cm',
                                     textAlign: TextAlign.center,
                                     style: FlutterFlowTheme.of(context)
                                         .titleSmall
