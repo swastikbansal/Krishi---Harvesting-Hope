@@ -22,6 +22,7 @@ import 'index.dart';
 import 'dart:async';
 import 'package:easy_debounce/easy_debounce.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter.optionURLReflectsImperativeAPIs = true;

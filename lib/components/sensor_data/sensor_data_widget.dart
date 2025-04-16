@@ -213,7 +213,7 @@ class _SensorDataWidgetState extends State<SensorDataWidget> with RouteAware {
                                       ),
                                 ),
                                 Text(
-                                  FFAppState().Nvalue,
+                                  "${FFAppState().Nvalue} mg/kg",
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -281,7 +281,7 @@ class _SensorDataWidgetState extends State<SensorDataWidget> with RouteAware {
                                       ),
                                 ),
                                 Text(
-                                  FFAppState().Pvalue,
+                                  "${FFAppState().Pvalue} mg/kg",
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -350,7 +350,7 @@ class _SensorDataWidgetState extends State<SensorDataWidget> with RouteAware {
                                       ),
                                 ),
                                 Text(
-                                  FFAppState().Kvalue,
+                                  "${FFAppState().Kvalue} mg/kg",
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -436,7 +436,7 @@ class _SensorDataWidgetState extends State<SensorDataWidget> with RouteAware {
                                       ),
                                 ),
                                 Text(
-                                  FFAppState().ECvalue,
+                                  "${FFAppState().ECvalue} μs/cm",
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -504,7 +504,7 @@ class _SensorDataWidgetState extends State<SensorDataWidget> with RouteAware {
                                       ),
                                 ),
                                 Text(
-                                  FFAppState().moisturevalue,
+                                  "${FFAppState().moisturevalue} %",
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(

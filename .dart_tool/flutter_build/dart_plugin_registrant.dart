@@ -7,6 +7,7 @@
 
 import 'dart:io'; // flutter_ignore: dart_io_import.
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_blue_plus_android/flutter_blue_plus_android.dart';
 import 'package:geolocator_android/geolocator_android.dart';
 import 'package:google_sign_in_android/google_sign_in_android.dart';
 import 'package:image_picker_android/image_picker_android.dart';
@@ -17,6 +18,7 @@ import 'package:url_launcher_android/url_launcher_android.dart';
 import 'package:video_player_android/video_player_android.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_blue_plus_darwin/flutter_blue_plus_darwin.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
 import 'package:google_sign_in_ios/google_sign_in_ios.dart';
 import 'package:image_picker_ios/image_picker_ios.dart';
@@ -29,12 +31,14 @@ import 'package:video_player_avfoundation/video_player_avfoundation.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:file_selector_linux/file_selector_linux.dart';
+import 'package:flutter_blue_plus_linux/flutter_blue_plus_linux.dart';
 import 'package:image_picker_linux/image_picker_linux.dart';
 import 'package:path_provider_linux/path_provider_linux.dart';
 import 'package:shared_preferences_linux/shared_preferences_linux.dart';
 import 'package:url_launcher_linux/url_launcher_linux.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:file_selector_macos/file_selector_macos.dart';
+import 'package:flutter_blue_plus_darwin/flutter_blue_plus_darwin.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
 import 'package:google_sign_in_ios/google_sign_in_ios.dart';
 import 'package:image_picker_macos/image_picker_macos.dart';
@@ -62,6 +66,15 @@ class _PluginRegistrant {
       } catch (err) {
         print(
           '`file_picker` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
+        FlutterBluePlusAndroid.registerWith();
+      } catch (err) {
+        print(
+          '`flutter_blue_plus_android` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
       }
@@ -153,6 +166,15 @@ class _PluginRegistrant {
       } catch (err) {
         print(
           '`file_picker` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
+        FlutterBluePlusDarwin.registerWith();
+      } catch (err) {
+        print(
+          '`flutter_blue_plus_darwin` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
       }
@@ -267,6 +289,15 @@ class _PluginRegistrant {
       }
 
       try {
+        FlutterBluePlusLinux.registerWith();
+      } catch (err) {
+        print(
+          '`flutter_blue_plus_linux` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
         ImagePickerLinux.registerWith();
       } catch (err) {
         print(
@@ -317,6 +348,15 @@ class _PluginRegistrant {
       } catch (err) {
         print(
           '`file_selector_macos` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
+        FlutterBluePlusDarwin.registerWith();
+      } catch (err) {
+        print(
+          '`flutter_blue_plus_darwin` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
       }

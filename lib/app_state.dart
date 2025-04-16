@@ -14,11 +14,24 @@ class FFAppState extends ChangeNotifier {
 
   FFAppState._internal();
 
-  static void reset() {
+  static void reset() async {
     _instance = FFAppState._internal();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('Nvalue');
+    await prefs.remove('Pvalue');
+    await prefs.remove('Kvalue');
+    await prefs.remove('ECvalue');
+    await prefs.remove('moisturevalue');
   }
 
-  Future initializePersistedState() async {}
+  Future initializePersistedState() async {
+    final prefs = await SharedPreferences.getInstance();
+    _Nvalue = prefs.getString('Nvalue') ?? '';
+    _Pvalue = prefs.getString('Pvalue') ?? '';
+    _Kvalue = prefs.getString('Kvalue') ?? '';
+    _ECvalue = prefs.getString('ECvalue') ?? '';
+    _moisturevalue = prefs.getString('moisturevalue') ?? '';
+  }
 
   void update(VoidCallback callback) {
     callback();
@@ -111,7 +124,9 @@ class FFAppState extends ChangeNotifier {
   String get Nvalue => _Nvalue;
   set Nvalue(String value) {
     _Nvalue = value;
-
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('Nvalue', value);
+    });
     debugLogAppState(this);
   }
 
@@ -119,7 +134,9 @@ class FFAppState extends ChangeNotifier {
   String get Pvalue => _Pvalue;
   set Pvalue(String value) {
     _Pvalue = value;
-
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('Pvalue', value);
+    });
     debugLogAppState(this);
   }
 
@@ -127,7 +144,9 @@ class FFAppState extends ChangeNotifier {
   String get Kvalue => _Kvalue;
   set Kvalue(String value) {
     _Kvalue = value;
-
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('Kvalue', value);
+    });
     debugLogAppState(this);
   }
 
@@ -135,7 +154,9 @@ class FFAppState extends ChangeNotifier {
   String get ECvalue => _ECvalue;
   set ECvalue(String value) {
     _ECvalue = value;
-
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('ECvalue', value);
+    });
     debugLogAppState(this);
   }
 
@@ -143,7 +164,9 @@ class FFAppState extends ChangeNotifier {
   String get moisturevalue => _moisturevalue;
   set moisturevalue(String value) {
     _moisturevalue = value;
-
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('moisturevalue', value);
+    });
     debugLogAppState(this);
   }
 

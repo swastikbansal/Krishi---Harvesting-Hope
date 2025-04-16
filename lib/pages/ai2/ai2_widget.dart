@@ -1,11 +1,13 @@
 import '/backend/api_requests/api_calls.dart';
 import '/components/ai_bottom_sheet/ai_bottom_sheet_widget.dart';
+import '/components/sensor_data/sensor_data_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import 'dart:async';
 import 'package:aligned_tooltip/aligned_tooltip.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'ai2_model.dart';
 export 'ai2_model.dart';
+import 'ble_service.dart';
 
 /// This is where farmer will be able to communicate with our chatbot
 ///
@@ -34,6 +37,16 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  final BLEService _bleService = BLEService(); // Add BLE service
+  StreamSubscription? _sensorDataSubscription; // Add subscription
+
+  int Nvalue = 0;
+  int Pvalue = 0;
+  int Kvalue = 0;
+  double ecValue = 0.0;
+  double moistureValue = 0.0;
+  int lastSensorReading = 0;
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +64,78 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
         debugLogWidgetClass(_model);
       });
     _model.textFieldFocusNode2 ??= FocusNode();
+
+    // Initialize BLE sensor data subscription
+    _sensorDataSubscription = _bleService.sensorData.listen((data) {
+      if (FFAppState().sensorDataFetch) {
+        // Always extract and store sensor values in app state when data arrives
+        _extractAndStoreSensorValues(data);
+        
+        // Show visually distinct sensor data text in the text field
+        if (_model.textController2 != null) {
+          setState(() {
+            _model.textController2!.text = "📊 Sensor Data";
+          });
+        }
+      }
+    });
+  }
+
+  // Extract and store sensor values from the received data string
+  void _extractAndStoreSensorValues(String sensorData) {
+    try {
+      print("Extracting sensor values from: $sensorData");
+      
+      // Extract N value
+      RegExp nRegex = RegExp(r'Nitrogen \(N\): (\d+) mg\/kg');
+      Match? nMatch = nRegex.firstMatch(sensorData);
+      if (nMatch != null && nMatch.group(1) != null) {
+        String nValue = nMatch.group(1)!;
+        print("Extracted N value: $nValue");
+        FFAppState().Nvalue = nValue;
+      }
+      
+      // Extract P value
+      RegExp pRegex = RegExp(r'Phosphorus \(P\): (\d+) mg\/kg');
+      Match? pMatch = pRegex.firstMatch(sensorData);
+      if (pMatch != null && pMatch.group(1) != null) {
+        String pValue = pMatch.group(1)!;
+        print("Extracted P value: $pValue");
+        FFAppState().Pvalue = pValue;
+      }
+      
+      // Extract K value
+      RegExp kRegex = RegExp(r'Potassium \(K\): (\d+) mg\/kg');
+      Match? kMatch = kRegex.firstMatch(sensorData);
+      if (kMatch != null && kMatch.group(1) != null) {
+        String kValue = kMatch.group(1)!;
+        print("Extracted K value: $kValue");
+        FFAppState().Kvalue = kValue;
+      }
+      
+      // Extract EC value
+      RegExp ecRegex = RegExp(r'Electrical Conductivity: ([\d.]+)');
+      Match? ecMatch = ecRegex.firstMatch(sensorData);
+      if (ecMatch != null && ecMatch.group(1) != null) {
+        String ecValue = ecMatch.group(1)!;
+        print("Extracted EC value: $ecValue");
+        FFAppState().ECvalue = ecValue;
+      }
+      
+      // Extract Moisture value
+      RegExp moistureRegex = RegExp(r'Soil Moisture: ([\d.]+)%?');
+      Match? moistureMatch = moistureRegex.firstMatch(sensorData);
+      if (moistureMatch != null && moistureMatch.group(1) != null) {
+        String moistureValue = moistureMatch.group(1)!;
+        print("Extracted Moisture value: $moistureValue");
+        FFAppState().moisturevalue = moistureValue; // Note: using correct variable name 'moisturevalue'
+      }
+      
+      // Sensor values successfully stored in app state
+      print("Sensor values stored in AppState successfully");
+    } catch (e) {
+      print("Error extracting sensor values: $e");
+    }
   }
 
   @override
@@ -59,13 +144,40 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
 
     _model.dispose();
 
+    _sensorDataSubscription?.cancel(); // Cancel subscription
+    _bleService.disconnect(); // Disconnect from BLE device
+
     super.dispose();
   }
 
-  @override
-  void didUpdateWidget(Ai2Widget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _model.widget = widget;
+  // Handle sensor toggle button press
+  void _handleSensorToggle() async {
+    bool previousState = FFAppState().sensorDataFetch;
+    bool newState = !previousState;
+    
+    safeSetState(() => FFAppState().sensorDataFetch = newState);
+
+    if (newState) {
+      // When toggled ON, start scanning for BLE device
+      print("Sensor toggle turned ON, starting scan...");
+      await _bleService.startScan();
+      _model.textController2!.text = "Connecting to sensor...";
+      
+      // After a short delay, update text to a visually distinct sensor data indicator
+      await Future.delayed(Duration(seconds: 2));
+      if (FFAppState().sensorDataFetch) { // Only update if still toggled on
+        setState(() {
+          _model.textController2!.text = "📊 Sensor Data";
+        });
+      }
+    } else {
+      // When toggled OFF, disconnect but preserve the data and sensor text
+      print("Sensor toggle turned OFF, disconnecting...");
+      await _bleService.disconnect();
+      
+      // Keep the sensor data text for AI prompting
+      // The text will remain until user manually removes it
+    }
   }
 
   @override
@@ -522,6 +634,52 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                               textCapitalization: TextCapitalization.words,
                               textInputAction: TextInputAction.done,
                               obscureText: false,
+                              onTap: () {
+                                // Open sensor data bottom sheet when sensor data is available
+                                if (_model.textController2!.text.contains("Sensor Data")) {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    enableDrag: true,
+                                    useSafeArea: true,
+                                    context: context,
+                                    builder: (context) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          FocusScope.of(context).unfocus();
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        },
+                                        child: Padding(
+                                          padding: MediaQuery.viewInsetsOf(context),
+                                          child: Container(
+                                            height: MediaQuery.of(context).size.height * 0.6,
+                                            child: SensorDataWidget(),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: FlutterFlowTheme.of(context)
+                                        .bodyMediumFamily,
+                                    letterSpacing: 0.0,
+                                    useGoogleFonts: GoogleFonts.asMap()
+                                        .containsKey(
+                                            FlutterFlowTheme.of(context)
+                                                .bodyMediumFamily),
+                                    lineHeight: 1.5,
+                                    // Apply custom styling conditionally
+                                    color: _model.textController2!.text == "📊 Sensor Data" 
+                                        ? Color(0xFF3794FF) 
+                                        : FlutterFlowTheme.of(context).primaryText,
+                                    fontWeight: _model.textController2!.text == "📊 Sensor Data" 
+                                        ? FontWeight.bold 
+                                        : FontWeight.normal,
+                                  ),
                               decoration: InputDecoration(
                                 isDense: true,
                                 hintText: FFLocalizations.of(context).getText(
@@ -590,18 +748,6 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                 hoverColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
                               ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: FlutterFlowTheme.of(context)
-                                        .bodyMediumFamily,
-                                    letterSpacing: 0.0,
-                                    useGoogleFonts: GoogleFonts.asMap()
-                                        .containsKey(
-                                            FlutterFlowTheme.of(context)
-                                                .bodyMediumFamily),
-                                    lineHeight: 1.5,
-                                  ),
                               maxLines: 12,
                               minLines: 1,
                               cursorColor:
@@ -747,11 +893,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                     Stack(
                                       children: [
                                         ToggleIcon(
-                                          onPressed: () async {
-                                            safeSetState(() => FFAppState()
-                                                    .sensorDataFetch =
-                                                !FFAppState().sensorDataFetch);
-                                          },
+                                          onPressed: _handleSensorToggle,
                                           value: FFAppState().sensorDataFetch,
                                           onIcon: Icon(
                                             Icons.sensors,
@@ -1013,26 +1155,46 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                                   !FFAppState().aiSendButton);
                                           logFirebaseEvent(
                                               'AI2_PAGE_ToggleIcon_70xyhzzs_ON_TOGGLE');
-                                          FFAppState().usermessage =
-                                              _model.textController2.text;
-                                          safeSetState(() {});
-                                          FFAppState().isLoading = true;
-                                          safeSetState(() {});
-                                          FFAppState()
-                                              .addToChatlist(<String, dynamic>{
-                                            'message': FFAppState().usermessage,
+                                          
+                                          // Store original user message
+                                          String originalMessage = _model.textController2!.text;
+                                          FFAppState().usermessage = originalMessage;
+                                          
+                                          // Create prompt text that will show in the chat
+                                          FFAppState().addToChatlist(<String, dynamic>{
+                                            'message': originalMessage,
                                             'isuser': true,
                                           });
-                                          safeSetState(() {});
+                                          
+                                          // Clear text fields
                                           safeSetState(() {
                                             _model.textController2?.clear();
                                             _model.textController1?.clear();
                                           });
-                                          _model.apiResultyc4 =
-                                              await UltronCall.call(
-                                            input: FFAppState().usermessage,
+                                          
+                                          // Create the actual prompt to send to AI with sensor readings if available
+                                          String fullPrompt = originalMessage;
+                                          
+                                          // Check if the message contains sensor data reference
+                                          if (originalMessage.contains("Sensor Data")) {
+                                            // Create a detailed sensor data prompt to send to the API
+                                            fullPrompt = originalMessage.replaceAll("📊 Sensor Data", "");
+                                            fullPrompt += "\n\nSensor Readings:\n";
+                                            fullPrompt += "Nitrogen (N): ${FFAppState().Nvalue} mg/kg\n";
+                                            fullPrompt += "Phosphorus (P): ${FFAppState().Pvalue} mg/kg\n";
+                                            fullPrompt += "Potassium (K): ${FFAppState().Kvalue} mg/kg\n";
+                                            fullPrompt += "Electrical Conductivity: ${FFAppState().ECvalue} μs/cm\n";
+                                            fullPrompt += "Soil Moisture: ${FFAppState().moisturevalue}%";
+                                          }
+                                          
+                                          // Set loading state
+                                          safeSetState(() => FFAppState().isLoading = true);
+                                          
+                                          // Make API call with the full prompt
+                                          _model.apiResultyc4 = await UltronCall.call(
+                                            input: fullPrompt,
                                           );
-
+                                          
                                           if ((_model.apiResultyc4?.succeeded ??
                                               true)) {
                                             FFAppState().addToChatlist(<String,
