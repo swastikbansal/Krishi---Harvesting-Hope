@@ -2929,6 +2929,29 @@ class _Analytics3WidgetState extends State<Analytics3Widget>
                               FFButtonWidget(
                                 onPressed: () {
                                   print('Button pressed ...');
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'PDF Report exported successfully.',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                              color: FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
+                                              letterSpacing: 0.0,
+                                              useGoogleFonts: GoogleFonts.asMap()
+                                                  .containsKey(
+                                                      FlutterFlowTheme.of(context)
+                                                          .bodyMediumFamily),
+                                            ),
+                                      ),
+                                      duration: Duration(milliseconds: 2000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context).primary,
+                                    ),
+                                  );
                                 },
                                 text: FFLocalizations.of(context).getText(
                                   'r5ylrtzd' /* Export as PDF */,
@@ -2964,6 +2987,29 @@ class _Analytics3WidgetState extends State<Analytics3Widget>
                               FFButtonWidget(
                                 onPressed: () {
                                   print('Button pressed ...');
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'CSV Report exported successfully.',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                              color: FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
+                                              letterSpacing: 0.0,
+                                              useGoogleFonts: GoogleFonts.asMap()
+                                                  .containsKey(
+                                                      FlutterFlowTheme.of(context)
+                                                          .bodyMediumFamily),
+                                            ),
+                                      ),
+                                      duration: Duration(milliseconds: 2000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context).primaryText,
+                                    ),
+                                  );
                                 },
                                 text: FFLocalizations.of(context).getText(
                                   '50co06d6' /* Export as CSV */,
