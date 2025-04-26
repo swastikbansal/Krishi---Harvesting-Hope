@@ -1,4 +1,6 @@
 import '/backend/api_requests/api_calls.dart';
+import '/backend/backend.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/components/ai_bottom_sheet/ai_bottom_sheet_widget.dart';
 import '/components/sensor_data/sensor_data_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -15,10 +17,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:provider/provider.dart';
 import 'ai2_model.dart';
 export 'ai2_model.dart';
 import 'ble_service.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 
 /// This is where farmer will be able to communicate with our chatbot
 ///
@@ -85,7 +91,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
   void _extractAndStoreSensorValues(String sensorData) {
     try {
       print("Extracting sensor values from: $sensorData");
-      
+
       // Extract N value
       RegExp nRegex = RegExp(r'Nitrogen \(N\): (\d+) mg\/kg');
       Match? nMatch = nRegex.firstMatch(sensorData);
@@ -94,7 +100,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
         print("Extracted N value: $nValue");
         FFAppState().Nvalue = nValue;
       }
-      
+
       // Extract P value
       RegExp pRegex = RegExp(r'Phosphorus \(P\): (\d+) mg\/kg');
       Match? pMatch = pRegex.firstMatch(sensorData);
@@ -103,7 +109,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
         print("Extracted P value: $pValue");
         FFAppState().Pvalue = pValue;
       }
-      
+
       // Extract K value
       RegExp kRegex = RegExp(r'Potassium \(K\): (\d+) mg\/kg');
       Match? kMatch = kRegex.firstMatch(sensorData);
@@ -112,7 +118,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
         print("Extracted K value: $kValue");
         FFAppState().Kvalue = kValue;
       }
-      
+
       // Extract EC value
       RegExp ecRegex = RegExp(r'Electrical Conductivity: ([\d.]+)');
       Match? ecMatch = ecRegex.firstMatch(sensorData);
@@ -121,7 +127,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
         print("Extracted EC value: $ecValue");
         FFAppState().ECvalue = ecValue;
       }
-      
+
       // Extract Moisture value
       RegExp moistureRegex = RegExp(r'Soil Moisture: ([\d.]+)%?');
       Match? moistureMatch = moistureRegex.firstMatch(sensorData);
@@ -130,7 +136,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
         print("Extracted Moisture value: $moistureValue");
         FFAppState().moisturevalue = moistureValue; // Note: using correct variable name 'moisturevalue'
       }
-      
+
       // Sensor values successfully stored in app state
       print("Sensor values stored in AppState successfully");
     } catch (e) {
@@ -154,7 +160,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
   void _handleSensorToggle() async {
     bool previousState = FFAppState().sensorDataFetch;
     bool newState = !previousState;
-    
+
     safeSetState(() => FFAppState().sensorDataFetch = newState);
 
     if (newState) {
@@ -691,7 +697,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                       fontFamily: FlutterFlowTheme.of(context)
                                           .bodyMediumFamily,
                                       color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
+                                          .primaryText,
                                       letterSpacing: 0.0,
                                       useGoogleFonts: GoogleFonts.asMap()
                                           .containsKey(
@@ -703,7 +709,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                   borderSide: BorderSide(
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
-                                    width: 1.0,
+                                    width: 0.0,
                                   ),
                                   borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(4.0),
@@ -714,7 +720,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                   borderSide: BorderSide(
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryBackground,
-                                    width: 1.0,
+                                    width: 0.0,
                                   ),
                                   borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(4.0),
@@ -723,8 +729,9 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                 ),
                                 errorBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context).error,
-                                    width: 1.0,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    width: 0.0,
                                   ),
                                   borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(4.0),
@@ -733,8 +740,9 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                 ),
                                 focusedErrorBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context).error,
-                                    width: 1.0,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    width: 0.0,
                                   ),
                                   borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(4.0),
@@ -744,7 +752,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                 filled: true,
                                 fillColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
-                                contentPadding: EdgeInsets.all(12.0),
+                                contentPadding: EdgeInsets.all(16.0),
                                 hoverColor: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
                               ),
@@ -752,7 +760,7 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                               minLines: 1,
                               cursorColor:
                                   FlutterFlowTheme.of(context).primaryText,
-                              validator: _model.textController2Validator
+                              validator: _model.textControllerValidator
                                   .asValidator(context),
                             ),
                           ),
@@ -1148,33 +1156,34 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                               .alternate,
                                         ),
                                       ),
-                                      child: ToggleIcon(
-                                        onPressed: () async {
-                                          safeSetState(() =>
-                                              FFAppState().aiSendButton =
-                                                  !FFAppState().aiSendButton);
+                                      child: InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
                                           logFirebaseEvent(
                                               'AI2_PAGE_ToggleIcon_70xyhzzs_ON_TOGGLE');
-                                          
+
                                           // Store original user message
                                           String originalMessage = _model.textController2!.text;
                                           FFAppState().usermessage = originalMessage;
-                                          
+
                                           // Create prompt text that will show in the chat
                                           FFAppState().addToChatlist(<String, dynamic>{
                                             'message': originalMessage,
                                             'isuser': true,
                                           });
-                                          
+
                                           // Clear text fields
                                           safeSetState(() {
                                             _model.textController2?.clear();
                                             _model.textController1?.clear();
                                           });
-                                          
+
                                           // Create the actual prompt to send to AI with sensor readings if available
                                           String fullPrompt = originalMessage;
-                                          
+
                                           // Check if the message contains sensor data reference
                                           if (originalMessage.contains("Sensor Data")) {
                                             // Create a detailed sensor data prompt to send to the API
@@ -1186,74 +1195,65 @@ class _Ai2WidgetState extends State<Ai2Widget> with RouteAware {
                                             fullPrompt += "Electrical Conductivity: ${FFAppState().ECvalue} μs/cm\n";
                                             fullPrompt += "Soil Moisture: ${FFAppState().moisturevalue}%";
                                           }
-                                          
+
                                           // Set loading state
                                           safeSetState(() => FFAppState().isLoading = true);
-                                          
+
                                           // Make API call with the full prompt
-                                          _model.apiResultyc4 = await UltronCall.call(
+                                          _model.apiResulte8x = await PaulCall.call(
                                             input: fullPrompt,
                                           );
-                                          
-                                          if ((_model.apiResultyc4?.succeeded ??
+
+                                          if ((_model.apiResulte8x?.succeeded ??
                                               true)) {
                                             FFAppState().addToChatlist(<String,
                                                 dynamic>{
-                                              'message': getJsonField(
-                                                (_model.apiResultyc4
+                                              'message': PaulCall.answer(
+                                                (_model.apiResulte8x
                                                         ?.jsonBody ??
                                                     ''),
-                                                r'''$.choices[0].message.content''',
                                               ),
                                               'isuser': false,
                                             });
-                                            safeSetState(() {});
                                           }
-                                          FFAppState().isLoading = false;
-                                          safeSetState(() {});
-                                          await _model.listViewController
-                                              ?.animateTo(
-                                            _model.listViewController!.position
-                                                .maxScrollExtent,
-                                            duration:
-                                                Duration(milliseconds: 100),
-                                            curve: Curves.ease,
-                                          );
-
-                                          safeSetState(() {});
-                                        },
-                                        value: FFAppState().aiSendButton,
-                                        onIcon: Icon(
-                                          Icons.square_rounded,
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
-                                          size: 20.0,
-                                        ),
-                                        offIcon: FaIcon(
-                                          FontAwesomeIcons.arrowUp,
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
-                                          size: 20.0,
-                                        ),
-                                      ),
+                                     // Update UI state
+                                    setState(() {
+                                      FFAppState().isLoading = false;
+                                    });
+                                    // Scroll to bottom
+                                    await _model.listViewController?.animateTo(
+                                      _model.listViewController!.position
+                                          .maxScrollExtent,
+                                      duration: Duration(milliseconds: 100),
+                                      curve: Curves.ease,
                                     );
-                                  } else {
-                                    return Lottie.asset(
-                                      'assets/jsons/AI_Text_Animation_Krishi.json',
-                                      width: 35.0,
-                                      height: 35.0,
-                                      fit: BoxFit.contain,
-                                      animate: true,
-                                    );
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
+                                    setState(() {});
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_upward,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    size: 24.0,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return Lottie.asset(
+                                'assets/jsons/AI_Text_Animation_Krishi.json',
+                                width: 35.0,
+                                height: 35.0,
+                                fit: BoxFit.contain,
+                                animate: true,
+                              );
+                            }
+                          },
                         ),
-                      ]
-                          .divide(SizedBox(height: 8.0))
-                          .around(SizedBox(height: 8.0)),
+                      ),
+                    ]
+                        .addToStart(SizedBox(width: 4.0))
+                        .addToEnd(SizedBox(width: 4.0)),
+                  ),
+                ].divide(SizedBox(height: 8.0)).around(SizedBox(height: 8.0)),
                     ),
                   ),
                 ),
